@@ -13,18 +13,18 @@ import "./DappLib.sol";
     contracts can call them. This can be achieved in four steps:
 
     1) Include the "Access Control: Contract Access" feature block when creating your project.
-       This adds all the functionality to manage white-listing of external contracts in your
-       state contract.
+        This adds all the functionality to manage white-listing of external contracts in your
+        state contract.
 
     2) Add the "requireContractAuthorized" function modifiers to those state contract functions
-       that should be restricted.
+        that should be restricted.
 
     3) Deploy the contract that will be calling into the state contract (like this one, for example).
     
     4) Call the "authorizeContract()" function in the state contract with the deployed address of the
-       calling contract. This adds the calling contract to a white-list. Thereafter, any calls to any
-       function in the state contract that use the "requireContractAuthorized" function modifier will
-       succeed only if the calling contract (or any caller for that matter) is white-listed.
+        calling contract. This adds the calling contract to a white-list. Thereafter, any calls to any
+        function in the state contract that use the "requireContractAuthorized" function modifier will
+        succeed only if the calling contract (or any caller for that matter) is white-listed.
 
     */
 
