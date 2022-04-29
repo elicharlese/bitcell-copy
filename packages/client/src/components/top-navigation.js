@@ -30,7 +30,12 @@ export default class TopNavigation extends LitElement {
         name: "harness",
         title: "UI Harness",
         route: "/harness"
-      }      
+      }
+      {
+        name: "calc",
+        title:"Calculator",
+        route: "/pages/calculator.js"
+      }
     ];
 
     // Add Customizer menu only if there are modules
