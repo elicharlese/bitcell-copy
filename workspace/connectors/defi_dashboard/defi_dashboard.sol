@@ -15,19 +15,19 @@ contract Blockchain_Connector {
         exchanges = {"Kucoin" : url, "Binance" : url,}
     }
     function {
+        //
+    }
+    function {
+        //
+    }
+    function {
         //Send data to defi dashboard
-    }
-    function {
-        //
-    }
-    function {
-        //
         msg.sender[]
     }
-    function {
+    function alert_the_regulator() private {
         //
     }
-    function {
+    function reset_data_update_timer() private {
         //
     }
 }

@@ -7,12 +7,14 @@ def gather_data_variables():
     return arrays
 
 def update_news_feed():
+''' '''
     return news
 
 def send_alerts():
+''' '''
     return alerts
 
 if _api_connector__ = "__main__"
 
 print(f'Here\'s your news: {update_news_feed()}')
-print
+print(f'')
