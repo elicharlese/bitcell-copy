@@ -15,9 +15,8 @@ export class AdminController {
 
 @UseGuards(AdminGuard)
 @Get('sample')
- @ApiOperation({ summary: 'Sample API end-point' })
- async sample(@Query('greeting') greeting: string): Promise<string> {
-   return await this.adminService.sample(greeting);
- }
-  
+@ApiOperation({ summary: 'Sample API end-point' })
+async sample(@Query('greeting') greeting: string): Promise<string> {
+  return await this.adminService.sample(greeting);
+  }
 }
