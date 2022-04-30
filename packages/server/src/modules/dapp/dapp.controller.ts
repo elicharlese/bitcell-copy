@@ -11,10 +11,9 @@ export class DappController {
 
 ///+api-controller
 
- @Get('sample')
- @ApiOperation({ summary: 'Sample API end-point' })
- async sample(@Query('greeting') greeting: string): Promise<string> {
-   return await this.dappService.sample(greeting);
- }
-  
+@Get('sample')
+@ApiOperation({ summary: 'Sample API end-point' })
+async sample(@Query('greeting') greeting: string): Promise<string> {
+  return await this.dappService.sample(greeting);
+  }
 }
