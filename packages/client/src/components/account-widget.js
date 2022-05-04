@@ -31,7 +31,7 @@ export default class AccountWidget extends LitElement {
     for(let i = 0; i < this.accountsLookUp.length; i++){
       let label = `User ${i}`;
       if (roles.length > i) {
-         label = roles[i];
+        label = roles[i];
       }
       optionsString = optionsString + `<option value="${this.accountsLookUp[i]}">${label} - ${this.accountsLookUp[i]}</option>`;
     };
