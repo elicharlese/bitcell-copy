@@ -14,3 +14,12 @@ contract Search_Addresses {
         }
     }
 }
+
+contract Address_Book {
+    function store_addresses_in_book() private {
+        addresses = [
+        address1 : "0x00000000000000",
+        address2 : "0x00000000000000",
+        ]
+    }
+}
