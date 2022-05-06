@@ -1,4 +1,5 @@
 def connect_zapier_automations():
+'''This function will automate the information to and from the Bitcell to other integrated platforms'''
     connection1()
     connection2()
     connection3()
