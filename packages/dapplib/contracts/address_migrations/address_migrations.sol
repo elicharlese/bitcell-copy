@@ -16,8 +16,9 @@ contract Begin_Migrations {
 }
 
 contract Test_Migrations {
-    function {
+    function check_migrations_against_address_storage() private {
         //
+        
     }
 }
 
