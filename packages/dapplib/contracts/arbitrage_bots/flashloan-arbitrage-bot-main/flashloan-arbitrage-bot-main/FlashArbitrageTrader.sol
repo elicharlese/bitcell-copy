@@ -35,13 +35,12 @@ contract FlashArbTrader is FlashLoanReceiverBase {
     address daiTokenAddress;
     uint256 amountToTrade;
     uint256 tokensOut;
-    
     /**
         Initialize deployment parameters
      */
     constructor(
-        address _aaveLendingPool, 
-        IUniswapV2Router02 _uniswapV2Router, 
+        address _aaveLendingPool,
+        IUniswapV2Router02 _uniswapV2Router,
         IUniswapV2Router02 _sushiswapV1Router
         ) FlashLoanReceiverBase(_aaveLendingPool) public {
 
@@ -52,7 +51,6 @@ contract FlashArbTrader is FlashLoanReceiverBase {
             // setting deadline to avoid scenario where miners hang onto it and execute at a more profitable time
             deadline = block.timestamp + 300; // 5 minutes
     }
-    
     /**
         Mid-flashloan logic i.e. what you do with the temporarily acquired flash liquidity
      */
@@ -87,36 +85,34 @@ contract FlashArbTrader is FlashLoanReceiverBase {
     function executeArbitrage() public {
 
         // Trade 1: Execute swap of Ether into designated ERC20 token on UniswapV2
-        try uniswapV2Router.swapETHForExactTokens{ 
-            value: amountToTrade 
+        try uniswapV2Router.swapETHForExactTokens{
+            value: amountToTrade
         }(
-            amountToTrade, 
-            getPathForETHToToken(daiTokenAddress), 
-            address(this), 
+            amountToTrade,
+            getPathForETHToToken(daiTokenAddress),
+            address(this),
             deadline
         ){
         } catch {
             // error handling when arb failed due to trade 1
         }
-        
         // Re-checking prior to execution since the NodeJS bot that instantiated this contract would have checked already
         uint256 tokenAmountInWEI = tokensOut.mul(1000000000000000000); //convert into Wei
-        uint256 estimatedETH = getEstimatedETHForToken(tokensOut, daiTokenAddress)[0]; // check how much ETH you'll get for x number of ERC20 token
-        
+        uint256 estimatedETH = getEstimatedETHForToken(tokensOut, daiTokenAddress)[0]; // check how much ETH you'll get for x number of ERC20 tokens
         // grant uniswap / sushiswap access to your token, DAI used since we're swapping DAI back into ETH
         dai.approve(address(uniswapV2Router), tokenAmountInWEI);
         dai.approve(address(sushiswapV1Router), tokenAmountInWEI);
 
         // Trade 2: Execute swap of the ERC20 token back into ETH on Sushiswap to complete the arb
         try sushiswapV1Router.swapExactTokensForETH (
-            tokenAmountInWEI, 
-            estimatedETH, 
-            getPathForTokenToETH(daiTokenAddress), 
-            address(this), 
+            tokenAmountInWEI,
+            estimatedETH,
+            getPathForTokenToETH(daiTokenAddress),
+            address(this),
             deadline
         ){
         } catch {
-            // error handling when arb failed due to trade 2    
+            // error handling when arb failed due to trade 2
         }
     }
 
@@ -124,10 +120,8 @@ contract FlashArbTrader is FlashLoanReceiverBase {
         sweep entire balance on the arb contract back to contract owner
      */
     function WithdrawBalance() public payable onlyOwner {
-        
         // withdraw all ETH
         msg.sender.call{ value: address(this).balance }("");
-        
         // withdraw all x ERC20 tokens
         dai.transfer(msg.sender, dai.balanceOf(address(this)));
     }
@@ -137,18 +131,16 @@ contract FlashArbTrader is FlashLoanReceiverBase {
         e.g. 1 ether = 1000000000000000000 wei
      */
     function flashloan (
-        address _flashAsset, 
+        address _flashAsset,
         uint _flashAmount,
         address _daiTokenAddress,
         uint _amountToTrade,
         uint256 _tokensOut
         ) public onlyOwner {
-            
         bytes memory data = "";
 
         daiTokenAddress = address(_daiTokenAddress);
         dai = IERC20(daiTokenAddress);
-        
         amountToTrade = _amountToTrade; // how much wei you want to trade
         tokensOut = _tokensOut; // how many tokens you want converted on the return trade     
 
@@ -165,18 +157,16 @@ contract FlashArbTrader is FlashLoanReceiverBase {
         address[] memory path = new address[](2);
         path[0] = uniswapV2Router.WETH();
         path[1] = ERC20Token;
-    
         return path;
     }
 
     /**
         Using a WETH wrapper to convert ERC20 token back into ETH
      */
-     function getPathForTokenToETH(address ERC20Token) private view returns (address[] memory) {
+    function getPathForTokenToETH(address ERC20Token) private view returns (address[] memory) {
         address[] memory path = new address[](2);
         path[0] = ERC20Token;
         path[1] = sushiswapV1Router.WETH();
-        
         return path;
     }
 
